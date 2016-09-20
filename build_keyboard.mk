@@ -23,9 +23,9 @@ ifdef master
 	MASTER = $(master)
 endif
 
-ifeq ($(MASTER),right)	
+ifeq ($(MASTER),right)
 	OPT_DEFS += -DMASTER_IS_ON_RIGHT
-else 
+else
 	ifneq ($(MASTER),left)
 $(error MASTER does not have a valid value(left/right))
 	endif
@@ -38,7 +38,7 @@ KEYBOARD_C := $(KEYBOARD_PATH)/$(KEYBOARD).c
 
 ifneq ("$(wildcard $(KEYBOARD_C))","")
     include $(KEYBOARD_PATH)/rules.mk
-else 
+else
     $(error "$(KEYBOARD_C)" does not exist)
 endif
 
@@ -49,7 +49,7 @@ ifneq ($(SUBPROJECT),)
     ifneq ("$(wildcard $(SUBPROJECT_C))","")
         OPT_DEFS += -DSUBPROJECT_$(SUBPROJECT)
         include $(SUBPROJECT_PATH)/rules.mk
-    else 
+    else
         $(error "$(SUBPROJECT_PATH)/$(SUBPROJECT).c" does not exist)
     endif
 endif
@@ -83,7 +83,7 @@ ifneq ($(SUBPROJECT),)
 	endif
 endif
 
-# Save the defines and includes here, so we don't include any keymap specific ones 
+# Save the defines and includes here, so we don't include any keymap specific ones
 PROJECT_DEFS := $(OPT_DEFS)
 PROJECT_INC := $(VPATH) $(EXTRAINCDIRS) $(SUBPROJECT_PATH) $(KEYBOARD_PATH)
 PROJECT_CONFIG := $(CONFIG_H)
@@ -148,6 +148,11 @@ ifeq ($(strip $(AUDIO_ENABLE)), yes)
 	SRC += $(QUANTUM_DIR)/audio/luts.c
 endif
 
+ifeq ($(strip $(STENO_ENABLE)), yes)
+    OPT_DEFS += -DSTENO_ENABLE
+        SRC += $(QUANTUM_DIR)/process_keycode/process_steno.c
+endif
+
 ifeq ($(strip $(UCIS_ENABLE)), yes)
 	OPT_DEFS += -DUCIS_ENABLE
 	UNICODE_ENABLE = yes
@@ -205,7 +210,7 @@ endif
 
 OUTPUTS := $(KEYMAP_OUTPUT) $(KEYBOARD_OUTPUT)
 $(KEYMAP_OUTPUT)_SRC := $(SRC)
-$(KEYMAP_OUTPUT)_DEFS := $(OPT_DEFS) -DQMK_KEYBOARD=\"$(KEYBOARD)\" -DQMK_KEYMAP=\"$(KEYMAP)\" 
+$(KEYMAP_OUTPUT)_DEFS := $(OPT_DEFS) -DQMK_KEYBOARD=\"$(KEYBOARD)\" -DQMK_KEYMAP=\"$(KEYMAP)\"
 $(KEYMAP_OUTPUT)_INC :=  $(VPATH) $(EXTRAINCDIRS)
 $(KEYMAP_OUTPUT)_CONFIG := $(CONFIG_H)
 $(KEYBOARD_OUTPUT)_SRC := $(CHIBISRC)
@@ -223,4 +228,3 @@ build: elf hex
 
 
 include $(TMK_PATH)/rules.mk
-

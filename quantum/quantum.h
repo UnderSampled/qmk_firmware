@@ -44,6 +44,10 @@ extern uint32_t default_layer_state;
 	#include "process_music.h"
 #endif
 
+#ifdef STENO_ENABLE
+ 	#include "process_steno.h"
+#endif
+
 #ifndef DISABLE_LEADER
 	#include "process_leader.h"
 #endif

@@ -19,13 +19,13 @@ extern keymap_config_t keymap_config;
 #define _FN 1
 #define _QWERTY 2
 #define _QW_FN 3
-#define _PLOVER 4
+#define _STENO 4
 #define _ADJ 5
 
 enum planck_keycodes {
   WORKMAN = SAFE_RANGE,
   QWERTY,
-  PLOVER
+  STENO
 };
 
 // Fillers to make layering more clear
@@ -110,7 +110,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   {_______, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, _______,   XXXXXXX, _______, _______, _______,  KC_MENU,     _______}
 },
 
-/* Plover layer (http://opensteno.org)
+/* Steno layer
  * ,-----------------------------------------------------------------------------------------------.
  * |   S   |   T   |   P   |   H   |   *   |   F   |   P   |   L   |   T   |   D   |       |       |
  * |-------+-------+-------+-------+-------+-------|-------+-------+-------+-------+-------+-------|
@@ -122,11 +122,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------------------'
  */
 
-[_PLOVER] = {
-  {KC_Q,    KC_W,    KC_E, KC_R, KC_T,    KC_U, KC_I, KC_O,    KC_P,    KC_LBRC, XXXXXXX, XXXXXXX},
-  {KC_A,    KC_S,    KC_D, KC_F, KC_G,    KC_J, KC_K, KC_L,    KC_SCLN, KC_QUOT, XXXXXXX, XXXXXXX},
-  {KC_1,    KC_1,    KC_1, KC_1, XXXXXXX, KC_1, KC_1, KC_1,    KC_1,    KC_1,    XXXXXXX, XXXXXXX},
-  {XXXXXXX, XXXXXXX, KC_C, KC_V, XXXXXXX, KC_N, KC_M, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, LT(_ADJ, KC_ENT)}
+[_STENO] = {
+  {ST_L_S,  ST_L_T,  ST_L_P, ST_L_H, ST_STAR, ST_STAR, ST_R_F, ST_R_P, ST_R_L,  ST_R_T,  ST_R_D,   XXXXXXX},
+  {ST_L_S,  ST_L_K,  ST_L_W, ST_L_R, ST_STAR, ST_STAR, ST_R_R, ST_R_B, ST_R_G,  ST_R_S,  ST_R_Z,   XXXXXXX},
+  {ST_NUM,  ST_NUM,  ST_NUM, ST_NUM, XXXXXXX, XXXXXXX, ST_NUM, ST_NUM, ST_NUM,  ST_NUM,  ST_NUM,   XXXXXXX},
+  {XXXXXXX, XXXXXXX, XXXXXXX, ST_A,   ST_O,   ST_E,    ST_U,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, LT(_ADJ, KC_ENT)}
 },
 
 /* Adjust
@@ -137,7 +137,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |-------+-------+-------+-------+-------+-------|-------+-------+-------+-------+-------+-------|
  * |       |       |       |       |       |       |       | ScrLk |Voice -| Music |MIDI on|       |
  * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * |       |       |       |       |       |       |       | Numlk |Workman| Qwerty| Plover|Adj/Ent|
+ * |       |       |       |       |       |       |       | Numlk |Workman| Qwerty| Steno |Adj/Ent|
  * `-----------------------------------------------------------------------------------------------'
  */
 
@@ -145,7 +145,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   {_______, _______, _______, _______, _______, _______, _______, _______, KC_INS,  KC_PSCR, KC_PAUSE, RESET},
   {_______, _______, _______, _______, _______, _______, _______, KC_CLCK, MUV_IN,  AU_TOG,  MI_OFF,   _______},
   {_______, _______, _______, _______, _______, _______, _______, KC_SLCK, MUV_DE,  MU_TOG,  MI_ON,    _______},
-  {_______, _______, _______, _______, _______, _______, _______, KC_NLCK, WORKMAN, QWERTY,  PLOVER,   _______}
+  {_______, _______, _______, _______, _______, _______, _______, KC_NLCK, WORKMAN, QWERTY,  STENO,    _______}
 }
 
 };
@@ -189,7 +189,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
-    case PLOVER:
+    case STENO:
       if (record->event.pressed) {
         #ifdef AUDIO_ENABLE
           PLAY_NOTE_ARRAY(tone_plover, false, 0);
@@ -197,10 +197,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (!eeconfig_is_enabled()) {
           eeconfig_init();
         }
-        keymap_config.raw = eeconfig_read_keymap();
-        keymap_config.nkro = 1;
-        eeconfig_update_keymap(keymap_config.raw);
-        persistant_default_layer_set(1UL<<_PLOVER);
+        persistant_default_layer_set(1UL<<_STENO);
       }
       return false;
       break;

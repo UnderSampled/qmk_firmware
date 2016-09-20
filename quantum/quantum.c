@@ -114,6 +114,9 @@ bool process_record_quantum(keyrecord_t *record) {
   #ifdef AUDIO_ENABLE
     process_music(keycode, record) &&
   #endif
+  #ifdef STENO_ENABLE
+    process_steno(keycode, record) &&
+  #endif
   #ifdef TAP_DANCE_ENABLE
     process_tap_dance(keycode, record) &&
   #endif

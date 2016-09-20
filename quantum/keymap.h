@@ -168,6 +168,31 @@ enum quantum_keycodes {
     RGB_VAI,
     RGB_VAD,
 
+    // Steno functionality
+    ST_L_S,
+    ST_L_T,
+    ST_L_K,
+    ST_L_P,
+    ST_L_W,
+    ST_L_H,
+    ST_L_R,
+    ST_A,
+    ST_O,
+    ST_STAR,
+    ST_E,
+    ST_U,
+    ST_R_F,
+    ST_R_R,
+    ST_R_P,
+    ST_R_B,
+    ST_R_L,
+    ST_R_G,
+    ST_R_T,
+    ST_R_S,
+    ST_R_D,
+    ST_R_Z,
+    ST_NUM,
+
     // Left shift, open paren
     KC_LSPO,
 

@@ -1,10 +1,7 @@
 
 #include "planck.h"
 #include "action_layer.h"
-#ifdef AUDIO_ENABLE
-  #include "audio.h"
-#endif
-#include "eeconfig.h"
+#include "keymap_steno.h"
 
 extern keymap_config_t keymap_config;
 
@@ -17,13 +14,13 @@ extern keymap_config_t keymap_config;
 #define _FN 1
 #define _QWERTY 2
 #define _QW_FN 3
-#define _PLOVER 4
+#define _STENO 4
 #define _ADJ 5
 
 enum planck_keycodes {
   WORKMAN = SAFE_RANGE,
   QWERTY,
-  PLOVER
+  STENO
 };
 
 // Fillers to make layering more clear
@@ -32,7 +29,7 @@ enum planck_keycodes {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-/* Workman Alpha-numeric
+/* Workman Num-pad
  * ,-----------------------------------------------------------------------------------------------.
  * |   Q   |   D   |   R   |   W   |   B   |   F   |   U   |   P   |   J   |   7   |   8   |   9   |
  * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
@@ -74,57 +71,57 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------------------.
  * |Gui/Esc|   1   |   2   |   3   |   4   |   5   |   6   |   7   |   8   |   9   |   0   | Bksp  |
  * |-------+-------+-------+-------+-------+---------------+-------+-------+-------+-------+-------|
- * | Ctrl  |   Q   |   W   |   E   |   R   |   T   |   Y   |   U   |   I   |   O   |   P   |   /   |
+ * |Alt/Tab|   Q   |   W   |   E   |   R   |   T   |   Y   |   U   |   I   |   O   |   P   |   /   |
  * |-------+-------+-------+-------+-------+---------------+-------+-------+-------+-------+-------|
- * | Shift |   A   |   S   |   D   |   F   |   G   |   H   |   J   |   K   |   L   |   ;   |   "   |
+ * | Ctrl  |   A   |   S   |   D   |   F   |   G   |   H   |   J   |   K   |   L   |   ;   |   "   |
  * |-------+-------+-------+-------+-------+-------|-------+-------+-------+-------+-------+-------|
- * |Alt/Tab|   Z   |   X   |   C   |   V   | Fn/SPC|   B   |   N   |   M   |   ,   |   .   |Adj/Ent|
+ * | Shift |   Z   |   X   |   C   |   V   |   B   | Fn/SPC|   N   |   M   |   ,   |   .   |Adj/Ent|
  * `-----------------------------------------------------------------------------------------------'
  */
 
 [_QWERTY] = {
-  {GUI_T(KC_ESC), KC_1, KC_2, KC_3, KC_4, KC_5,               KC_6, KC_7, KC_8, KC_9,    KC_0,    KC_BSPC},
-  {KC_LCTL,       KC_Q, KC_W, KC_E, KC_R, KC_T,               KC_Y, KC_U, KC_I, KC_O,    KC_P,    KC_ENT},
-  {KC_LSFT,       KC_A, KC_S, KC_D, KC_F, KC_G,               KC_H, KC_J, KC_K, KC_L,    KC_SCLN, KC_QUOT},
-  {ALT_T(KC_TAB), KC_Z, KC_X, KC_C, KC_V, LT(_QW_FN, KC_SPC), KC_B, KC_N, KC_M, KC_COMM, KC_DOT,  LT(_ADJ, KC_ENT)},
+  {GUI_T(KC_ESC), KC_1, KC_2, KC_3, KC_4, KC_5, KC_6,               KC_7, KC_8, KC_9,    KC_0,    KC_BSPC},
+  {ALT_T(KC_TAB), KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y,               KC_U, KC_I, KC_O,    KC_P,    KC_SLSH},
+  {KC_LCTL,       KC_A, KC_S, KC_D, KC_F, KC_G, KC_H,               KC_J, KC_K, KC_L,    KC_SCLN, KC_QUOT},
+  {KC_LSFT,       KC_Z, KC_X, KC_C, KC_V, KC_B, LT(_QW_FN, KC_SPC), KC_N, KC_M, KC_COMM, KC_DOT,  LT(_ADJ, KC_ENT)},
 },
 
 /* FN-key held (Qwerty)
  * ,-----------------------------------------------------------------------------------------------.
- * |  Gui  |   F1  |   F2  |   F3  |   F4  |   F5  |   F6  |   F7  |   F8  |   F9  |  F10  |  F11  |
+ * |  Gui  |   F1  |   F2  |   F3  |   F4  |   F5  |   F6  |   F7  |   F8  |   F9  |  F10  |  Del  |
  * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * |  Ctrl |   ~   |   [   |  PgUp |   ]   |       |       |   -   |   Up  |   =   |       |  F12  |
+ * |  Alt  |  Tab  |   [   |  PgUp |   ]   |       |       |   -   |   Up  |   =   |  F11  |  F12  |
  * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * | Shift |  Tab  |  Home |  PgDn |  End  |  Del  |       |  Left |  Down | Right |       |       |
+ * |  Ctrl |   ~   |  Home |  PgDn |  End  |       |       |  Left |  Down | Right |       |       |
  * |-------+-------+-------+-------+-------+-------|-------+-------+-------+-------+-------+-------|
- * |Alt/Tab|       |       |       |       | Fn/Spc|       |       |       |       |  Menu |Adj/Ent|
+ * | Shift |       |       |       |       |       | Fn/Spc|       |       |       |  Menu |Adj/Ent|
  * `-----------------------------------------------------------------------------------------------'
  */
 
 [_QW_FN] = {
-  {KC_LGUI, KC_F1,    KC_F2,   KC_F3,   KC_F4,   KC_F5,     KC_F6,   KC_F7,   KC_F8,   KC_F9,    KC_F10,  KC_F11},
-  {_______, KC_GRAVE, KC_LBRC, KC_PGUP, KC_RBRC, XXXXXXX,   XXXXXXX, KC_MINS, KC_UP,   KC_EQUAL, XXXXXXX, KC_F12},
-  {_______, KC_TAB,   KC_HOME, KC_PGDN, KC_END,  KC_DELETE, XXXXXXX, KC_LEFT, KC_DOWN, KC_RIGHT, XXXXXXX, XXXXXXX},
-  {_______, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, _______,   XXXXXXX, _______, _______, _______,  KC_MENU, _______}
+  {KC_LGUI, KC_F1,    KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,    KC_F10,  KC_DELETE},
+  {KC_LALT, KC_TAB,   KC_LBRC, KC_PGUP, KC_RBRC, XXXXXXX, XXXXXXX, KC_MINS, KC_UP,   KC_EQUAL, KC_F11,  KC_F12},
+  {_______, KC_GRAVE, KC_HOME, KC_PGDN, KC_END,  XXXXXXX, XXXXXXX, KC_LEFT, KC_DOWN, KC_RIGHT, XXXXXXX, XXXXXXX},
+  {_______, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, XXXXXXX, XXXXXXX, XXXXXXX,  KC_MENU, _______}
 },
 
 /* Plover layer (http://opensteno.org)
  * ,-----------------------------------------------------------------------------------------------.
- * |   S   |   T   |   P   |   H   |   *   |   F   |   P   |   L   |   T   |   D   |       |       |
+ * |   #   |   T   |   P   |   H   |   *   |       |   *   |   F   |   P   |   L   |   T   |   D   |
  * |-------+-------+-------+-------+-------+-------|-------+-------+-------+-------+-------+-------|
- * |   S   |   K   |   W   |   R   |   *   |   R   |   B   |   G   |   S   |   Z   |       |       |
+ * |   S   |   K   |   W   |   R   |   *   |       |   *   |   R   |   B   |   G   |   S   |   Z   |
  * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * |   #   |   #   |   #   |   #   |       |   #   |   #   |   #   |   #   |   #   |       |       |
+ * |       |       |       |       |       |       |       |       |       |       |       |       |
  * |-------+-------+-------+-------+-------+---------------+-------+-------+-------+-------+-------|
- * |       |       |   A   |   O   |       |   E   |   U   |       |       |       |       |Adj/Ent|
+ * |       |       |       |   A   |   O   |       |   E   |   U   |       |       |       | Adjust|
  * `-----------------------------------------------------------------------------------------------'
  */
 
-[_PLOVER] = {
-  {KC_Q,    KC_W,    KC_E, KC_R, KC_T,    KC_U, KC_I, KC_O,    KC_P,    KC_LBRC, XXXXXXX, XXXXXXX},
-  {KC_A,    KC_S,    KC_D, KC_F, KC_G,    KC_J, KC_K, KC_L,    KC_SCLN, KC_QUOT, XXXXXXX, XXXXXXX},
-  {KC_1,    KC_1,    KC_1, KC_1, XXXXXXX, KC_1, KC_1, KC_1,    KC_1,    KC_1,    XXXXXXX, XXXXXXX},
-  {XXXXXXX, XXXXXXX, KC_C, KC_V, XXXXXXX, KC_N, KC_M, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, LT(_ADJ, KC_ENT)}
+[_STENO] = {
+  {STN_NUM, STN_TL,  STN_PL,  STN_HL,  STN_STR, XXXXXXX, STN_STR, STN_FR,  STN_PR,  STN_LR,  STN_TR,  STN_DR},
+  {STN_SL,  STN_KL,  STN_WL,  STN_RL,  STN_STR, XXXXXXX, STN_STR, STN_RR,  STN_BR,  STN_GR,  STN_SR,  STN_ZR},
+  {XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX},
+  {XXXXXXX, XXXXXXX, XXXXXXX, STN_A,   STN_O,   XXXXXXX, STN_E,   STN_U,   XXXXXXX, XXXXXXX, XXXXXXX, MO(_ADJ)}
 },
 
 /* Adjust
@@ -135,7 +132,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |-------+-------+-------+-------+-------+-------|-------+-------+-------+-------+-------+-------|
  * |       |       |       |       |       |       |       | ScrLk |Voice -| Music |MIDI on|       |
  * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * |       |       |       |       |       |       |       | Numlk |Workman| Qwerty| Plover|Adj/Ent|
+ * |       |       |       |       |       |       |       | Numlk |Workman| Qwerty| Steno |Adj/Ent|
  * `-----------------------------------------------------------------------------------------------'
  */
 
@@ -143,7 +140,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   {_______, _______, _______, _______, _______, _______, _______, _______, KC_INS,  KC_PSCR, KC_PAUSE, RESET},
   {_______, _______, _______, _______, _______, _______, _______, KC_CLCK, MUV_IN,  AU_TOG,  MI_OFF,   _______},
   {_______, _______, _______, _______, _______, _______, _______, KC_SLCK, MUV_DE,  MU_TOG,  MI_ON,    _______},
-  {_______, _______, _______, _______, _______, _______, _______, KC_NLCK, WORKMAN, QWERTY,  PLOVER,   _______}
+  {_______, _______, _______, _______, _______, _______, _______, KC_NLCK, WORKMAN, QWERTY,  STENO,    _______}
 }
 
 };
@@ -155,7 +152,7 @@ float tone_goodbye[][2]    = SONG(GOODBYE_SOUND);
 
 float tone_workman[][2]    = SONG(QWERTY_SOUND);
 float tone_qwerty[][2]     = SONG(COLEMAK_SOUND);
-float tone_plover[][2]     = SONG(PLOVER_SOUND);
+float tone_steno[][2]      = SONG(PLOVER_SOUND)
 
 float music_scale[][2]     = SONG(MUSIC_SCALE_SOUND);
 
@@ -187,18 +184,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
-    case PLOVER:
+    case STENO:
       if (record->event.pressed) {
         #ifdef AUDIO_ENABLE
-          PLAY_SONG(tone_plover);
+          PLAY_SONG(tone_steno);
         #endif
-        if (!eeconfig_is_enabled()) {
-          eeconfig_init();
-        }
-        keymap_config.raw = eeconfig_read_keymap();
-        keymap_config.nkro = 1;
-        eeconfig_update_keymap(keymap_config.raw);
-        persistent_default_layer_set(1UL<<_PLOVER);
+        persistent_default_layer_set(1UL<<_STENO);
       }
       return false;
       break;
@@ -209,6 +200,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 void matrix_init_user(void) {
     #ifdef AUDIO_ENABLE
         startup_user();
+    #endif
+    #ifdef STENO_ENABLE
+        steno_set_mode(STENO_MODE_BOLT);
     #endif
 }
 

@@ -242,3 +242,7 @@ KC_LCTL, KC_Z, KC_X, KC_C, KC_V, KC_B,       KC_N, KC_M, KC_LT, KC_GT, KC_QUES, 
 int getKeymapCount(void) {
 	return sizeof(keymaps)/sizeof(keymaps[0]);
 }
+
+void matrix_init_user() {
+  steno_set_mode(STENO_MODE_GEMINI); // or STENO_MODE_BOLT
+}
